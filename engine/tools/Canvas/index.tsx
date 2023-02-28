@@ -1,7 +1,6 @@
 import React, { useRef, useEffect } from 'react'
 
 type Props = {
-  draw: any,
   map: string,
   player: {
     chracterImage: string
@@ -11,11 +10,11 @@ type Props = {
 
 const Canvas = (props: Props) => {
 
-  const { draw, map, player, ...rest } = props
+  const {  map, player, ...rest } = props
+
   const canvasRef = useRef<HTMLCanvasElement>(null)
 
   useEffect(() => {
-
     const canvas = canvasRef.current
     const context = canvas?.getContext('2d')
 
@@ -55,9 +54,9 @@ const Canvas = (props: Props) => {
     return () => {
       window.cancelAnimationFrame(mapFrame)
     }
-  }, [draw, map, player.chracterImage])
+  }, [map, player.chracterImage])
 
-  return <canvas ref={canvasRef} style={{ maxWidth: '100%', width: '100%', height: '200' }} {...rest} />
+  return <canvas ref={canvasRef} width='1080' height='auto' {...rest} />
 }
 
 export default Canvas

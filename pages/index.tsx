@@ -1,6 +1,5 @@
 import Canvas from "@/engine/tools/Canvas"
 
-
 export default function Play() {
 
   const map = {
@@ -17,5 +16,5 @@ export default function Play() {
   return <Canvas map={map.background} player={chracterSet} style={{
     backgroundColor: 'white',
     width: '100%'
-  }} draw={undefined} />  
+  }} />
 }
