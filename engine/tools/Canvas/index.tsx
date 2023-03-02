@@ -10,17 +10,18 @@ type Props = {
 
 const Canvas = (props: Props) => {
 
-  const {  map, player, ...rest } = props
+  const { map, player, ...rest } = props
 
   const canvasRef = useRef<HTMLCanvasElement>(null)
+
+  const PureCanvas = React.forwardRef((props, ref) => <canvas ref={ref} />);
 
   useEffect(() => {
     const canvas = canvasRef.current
     const context = canvas?.getContext('2d')
 
-    let mapFrame: number
-
-    const mapDraw = (ctx: CanvasRenderingContext2D) => {
+    const drawCanvas = (ctx:CanvasRenderingContext2D) => {
+      const canvas = ctx.canvas;
       const mapImage = new Image();
 
       mapImage.src = map;
@@ -33,30 +34,45 @@ const Canvas = (props: Props) => {
       let y = (canvas?.height! / 2) - (newHeight / 2);
 
       ctx.drawImage(mapImage, x, y, newWidth, newHeight);
+    
+      requestAnimationFrame(() => drawCanvas(ctx));
     }
 
-    const playerDraw = (ctx: CanvasRenderingContext2D) => {
+    const canvasRender = (ctx: CanvasRenderingContext2D) => { 
+      requestAnimationFrame(() => drawCanvas(context!));
+
+      const handleResize = () => {
+        ctx.canvas.height = window.innerHeight;
+        ctx.canvas.width = window.innerWidth;
+      };
+
+    handleResize();
+    window.addEventListener("resize", handleResize);
+
+    return () => window.removeEventListener("resize", handleResize);
+     
+    }
+
+    const playerRender = (ctx: CanvasRenderingContext2D) => {
+
       const playerImage = new Image();
 
       playerImage.src = player.chracterImage;
 
-      ctx.drawImage(playerImage, 0, 30, 20, 20);
+      ctx.drawImage(playerImage, 139, 300, 730, 220);
+
     }
 
     const render = () => {
-
-      mapDraw(context!)
-      playerDraw(context!)
+      canvasRender(context!)
+      playerRender(context!)
 
     }
-    render()
 
-    return () => {
-      window.cancelAnimationFrame(mapFrame)
-    }
-  }, [map, player.chracterImage])
+    render();
+  }, [])
 
-  return <canvas ref={canvasRef} width='1080' height='auto' {...rest} />
+  return <PureCanvas ref={canvasRef} {...rest} />
 }
 
 export default Canvas
