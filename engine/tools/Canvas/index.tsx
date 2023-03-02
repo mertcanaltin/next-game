@@ -14,8 +14,6 @@ const Canvas = (props: Props) => {
 
   const canvasRef = useRef<HTMLCanvasElement>(null)
 
-  const PureCanvas = React.forwardRef((props, ref) => <canvas ref={ref} />);
-
   useEffect(() => {
     const canvas = canvasRef.current
     const context = canvas?.getContext('2d')
@@ -72,7 +70,7 @@ const Canvas = (props: Props) => {
     render();
   }, [])
 
-  return <PureCanvas ref={canvasRef} {...rest} />
+  return <canvas ref={canvasRef} {...rest} />
 }
 
 export default Canvas
