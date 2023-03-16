@@ -38,18 +38,21 @@ const Canvas = (props: Props) => {
       }
     };
 
-    const canvasRender = (ctx: CanvasRenderingContext2D) => { 
+    const canvasRender = (ctx: CanvasRenderingContext2D) => {
       requestAnimationFrame(() => drawCanvas(ctx));
-
+    
       const handleResize = () => {
         ctx.canvas.height = window.innerHeight;
         ctx.canvas.width = window.innerWidth;
       };
-
+    
       handleResize();
       window.addEventListener("resize", handleResize);
-
-      return () => window.removeEventListener("resize", handleResize);
+    
+      return () => {
+        window.removeEventListener("resize", handleResize);
+        window.removeEventListener("keydown", handleKeyDown);
+      };
     };
 
     const drawCanvas = (ctx:CanvasRenderingContext2D) => {
@@ -63,11 +66,14 @@ const Canvas = (props: Props) => {
       let x = (canvas?.width! / 2) - (newWidth / 2);
       let y = (canvas?.height! / 2) - (newHeight / 2);
 
+     
+      ctx.drawImage(mapImage, x, y, newWidth, newHeight);
+
       const characterImg = new Image();
       characterImg.src = player.chracterImage;
-
-      ctx.drawImage(mapImage, x, y, newWidth, newHeight);
       ctx.drawImage(characterImg, position.x, position.y, 80, 80);
+
+      
 
       requestAnimationFrame(() => drawCanvas(ctx));
     };
@@ -82,7 +88,7 @@ const Canvas = (props: Props) => {
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [map, player]);
+  }, [position]);
 
   return <canvas ref={canvasRef} {...rest} />;
 };
