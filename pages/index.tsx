@@ -14,7 +14,7 @@ export default function Play() {
 
 
   return <Canvas map={map.background} player={chracterSet} style={{
-    backgroundColor: 'white',
+    backgroundColor: 'orange',
     width: '100%'
   }} />
 }

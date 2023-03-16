@@ -18,24 +18,6 @@ const Canvas = (props: Props) => {
     const canvas = canvasRef.current
     const context = canvas?.getContext('2d')
 
-    const drawCanvas = (ctx:CanvasRenderingContext2D) => {
-      const canvas = ctx.canvas;
-      const mapImage = new Image();
-
-      mapImage.src = map;
-
-      let scaleFactor = Math.max(canvas?.width! / mapImage.width, canvas?.height! / mapImage.height);
-      let newWidth = mapImage.width * scaleFactor;
-      let newHeight = mapImage.height * scaleFactor;
-
-      let x = (canvas?.width! / 2) - (newWidth / 2);
-      let y = (canvas?.height! / 2) - (newHeight / 2);
-
-      ctx.drawImage(mapImage, x, y, newWidth, newHeight);
-    
-      requestAnimationFrame(() => drawCanvas(ctx));
-    }
-
     const canvasRender = (ctx: CanvasRenderingContext2D) => { 
       requestAnimationFrame(() => drawCanvas(context!));
 
@@ -51,20 +33,32 @@ const Canvas = (props: Props) => {
      
     }
 
-    const playerRender = (ctx: CanvasRenderingContext2D) => {
+    const drawCanvas = (ctx:CanvasRenderingContext2D) => {
+      const canvas = ctx.canvas;
+      const mapImage = new Image();
 
-      const playerImage = new Image();
+      mapImage.src = map;
 
-      playerImage.src = player.chracterImage;
+      let scaleFactor = Math.max(canvas?.width! / mapImage.width, canvas?.height! / mapImage.height);
+      let newWidth = mapImage.width * scaleFactor;
+      let newHeight = mapImage.height * scaleFactor;
 
-      ctx.drawImage(playerImage, 139, 300, 730, 220);
+      let x = (canvas?.width! / 2) - (newWidth / 2);
+      let y = (canvas?.height! / 2) - (newHeight / 2);
 
+      const chracterImg = new Image();
+  
+      chracterImg.src = player.chracterImage;
+
+
+      ctx.drawImage(mapImage, x, y, newWidth, newHeight);
+      ctx.drawImage(chracterImg, 0,4,80,80);
+    
+      requestAnimationFrame(() => drawCanvas(ctx));
     }
 
     const render = () => {
       canvasRender(context!)
-      playerRender(context!)
-
     }
 
     render();
